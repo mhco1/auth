@@ -2,7 +2,7 @@ from textual.screen import Screen
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, Static, Input, Log
 
-from ..utils import cmd
+from utils import cmd
 
 
 def Input1 (title,placeholder,password,id):

@@ -5,7 +5,7 @@ from os import popen
 def cmd(app ,c):
     res = None
     with app.suspend():
-        cc = './sh/pass ' + str(c)
+        cc = '$(pwd)/pass/pass.sh ' + str(c)
         res = popen(cc).read()
     return res
 

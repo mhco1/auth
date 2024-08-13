@@ -1,7 +1,9 @@
-from ..utils import cmd
 from textual.screen import Screen
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, Tree, Static, Log
+
+from utils import cmd
+
 
 class S_del(Screen):
     def compose(self):

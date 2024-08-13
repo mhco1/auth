@@ -4,7 +4,7 @@ from textual.screen import Screen
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, Tree, Static, Log
 
-from ..utils import cmd, convertJsonToTree, getPathTree
+from utils import cmd, convertJsonToTree, getPathTree
 from .sdel import S_del
 from .sedit import S_edit
 
@@ -17,8 +17,6 @@ class S_home(Screen):
 
         pswLabel = Static('Label: ' + str(self.app.psw), id='psw')
         pswLabel.styles.padding = 0
-
-        self.app.g_log.write('Log... \n')
         
         yield Horizontal(
             Vertical(

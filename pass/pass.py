@@ -1,13 +1,11 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Static, Log
 
-from modules.screens.shome import S_home
-#from modules.screens.sedit import S_edit
-#from modules.screens.sdel import S_del
+from screens.shome import S_home
 
 
 class MyApp(App):
-    CSS_PATH = 'main.css'
+    CSS_PATH = 'pass.css'
     psw = ''
     g_log = Log(id='log')
 
@@ -24,6 +22,7 @@ class MyApp(App):
         self.push_screen('home')
 
     def compose(self) -> ComposeResult:
+        self.g_log.write('Log...\n')
         self.install_screen(S_home(), 'home')
         self.push_screen('home')
         yield Static('')
