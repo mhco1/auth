@@ -1,0 +1,39 @@
+S_home .l1 {
+    width: 100%;
+    border: dodgerblue;
+}
+
+S_home .l2 {
+    dock: right;
+    width: 30;
+    border: dodgerblue;
+}
+
+S_home .l2 > * {
+    margin-left: 2;
+    margin-right: 2;
+    margin-bottom: 1;
+    width: 100%;
+    padding: 0;
+}
+
+S_del {
+    align: center middle;
+}
+
+S_del * {
+    width: auto;
+    height: auto;
+}
+
+S_del Button {
+    margin: 1;
+}
+
+S_edit .l1 {
+    height: 80%;
+}
+
+S_edit Button {
+    margin: 1;
+}

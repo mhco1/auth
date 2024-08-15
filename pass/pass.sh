@@ -13,9 +13,6 @@ case $1 in
     copy)
         echo -n $(pass $2) | xclip -selection c | echo ''
         ;;
-    test)
-        echo 'testtest' | xclip -selection c -o
-        ;;
     *)
         echo -n "no option"
         ;;

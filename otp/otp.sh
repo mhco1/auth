@@ -5,12 +5,16 @@ case $1 in
         [ -d ~/.2fa/$2 ] && rm -r ~/.2fa/$2
         mkdir ~/.2fa/$2
         echo -n $3 > ~/.2fa/$2/key
-        gpg2 -r "x" -e ~/.2fa/$2/key
+        gpg2 -q -r "x" -e ~/.2fa/$2/key
         rm ~/.2fa/$2/key
         ;;
+    remove)
+        rm -r ~/.2fa/$2
+        ;;
     generate)
-        code=$(gpg2 -d ~/.2fa/$2/key.gpg)
-        echo $(oathtool -b --totp $code)
+        key=$(gpg2 -q -d ~/.2fa/$2/key.gpg)
+        code=$(oathtool -b --totp $key)
+        echo -n $code | xclip -selection c | echo -n $code
         ;;
     *)
         ;;
