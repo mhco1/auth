@@ -2,7 +2,6 @@ import os
 from textual.screen import Screen
 from textual.containers import Vertical, Horizontal
 from textual.widgets import OptionList, Button, Static
-#from textual.widgets.option_list import Option
 
 from utils import cmd
 
@@ -19,6 +18,7 @@ class S_home(Screen):
 
         yield Horizontal(
             Vertical(
+                Static('Services:'),
                 opList,
                 self.app.g_log,
                 classes='l1'
@@ -40,6 +40,14 @@ class S_home(Screen):
     def on_button_pressed(self, event) -> None:
         op = event.button.label.plain
 
+        if op == 'add':
+            self.app.changeScreen(S_add(), 'add')
+            return
+
+        if self.app.service == '':
+            self.app.g_log.write('select one service\n')
+            return
+
         if op == 'auth':
             code = cmd(self.app, f"generate {self.app.service}")
             self.app.g_log.write(f"generate {self.app.service}\n")
@@ -47,12 +55,7 @@ class S_home(Screen):
             return
         
         if op == 'del':
-            s_class = S_del()
-            s_name = 'del'
-
-        if op == 'add':
-            s_class = S_add()
-            s_name = 'add'
-
-        self.app.changeScreen(s_class, s_name)
+            self.app.changeScreen(S_del(), 'del')
+            return
+        
         return

@@ -6,12 +6,12 @@ select opt in "${options[@]}"
 do
     case $opt in
         "otp")
-            #echo "you chose choice 1"
             python ./otp/otp.py
+            break
             ;;
         "pass")
-            #echo "you chose choice 2"
             python ./pass/pass.py
+            break
             ;;
         *) echo "invalid option $REPLY";;
     esac

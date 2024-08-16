@@ -45,18 +45,21 @@ class S_home(Screen):
     def on_button_pressed(self, event) -> None:
         op = event.button.label.plain
 
+        if op == 'edit':
+            self.app.changeScreen(S_edit(), 'edit')
+            return
+
+        if self.app.psw == '':
+            self.app.g_log.write('select one passord\n')
+            return
+
         if op == 'copy':
             cmd(self.app, f"copy {self.app.psw}")
             self.app.g_log.write(f"copy {self.app.psw}\n")
             return
         
         if op == 'del':
-            s_class = S_del()
-            s_name = 'del'
+            self.app.changeScreen(S_del(), 'del')
+            return
 
-        if op == 'edit':
-            s_class = S_edit()
-            s_name = 'edit'
-
-        self.app.changeScreen(s_class, s_name)
         return

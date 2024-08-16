@@ -3,7 +3,6 @@ from textual.widgets import Static, Log
 
 from screens.shome import S_home
 
-
 class MyApp(App):
     CSS_PATH = 'pass.css'
     psw = ''

@@ -1,6 +1,9 @@
 #! /bin/bash
 
 case $1 in
+    generate)
+        pwgen -$2 $3 1
+        ;;
     tree)
         tree -J ~/.password-store
         ;;

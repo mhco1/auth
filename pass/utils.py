@@ -24,9 +24,10 @@ def convertJsonToTree(tree, jsonTree):
             t.add_leaf(re.sub(r'.gpg', '', j['name']))
 
         return
-
-    for x in jsonTree1['contents']:
-        recursive(tree1, x)
+    
+    if 'contents' in jsonTree1.keys():
+        for x in jsonTree1['contents']:
+            recursive(tree1, x)
 
     return
 

@@ -32,10 +32,22 @@ class S_add(Screen):
 
     def on_button_pressed(self, event):
         op = event.button.label.plain
+        log = self.query_one('#log')
         i_name = self.query_one('#name').value
         i_keyword = self.query_one('#keyword').value
 
         if op == 'add':
+
+            err = {
+                'notName': i_name == '',
+                'notKey': i_keyword == '',
+            }
+
+            if True in err.values():
+                if err['notName']: log.write('name is empty\n')
+                if err['notKey']: log.write('keyword is empty\n')
+                return
+
             cmd(self.app, f'insert "{i_name}" "{i_keyword}"')
             self.app.g_log.write(f"add {i_name}\n")
 
