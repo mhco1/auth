@@ -17,6 +17,7 @@ def convertJsonToTree(tree, jsonTree):
         if j['type'] == 'directory':
             tt = t.add(j['name'])
 
+        if 'contents' in j.keys():
             for jj in j['contents']:
                 recursive(tt, jj)
 
