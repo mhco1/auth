@@ -2,7 +2,7 @@ from textual.screen import Screen
 from textual.containers import Vertical, Horizontal
 from textual.widgets import Button, Static, Input, Log, Collapsible, Checkbox
 
-#from utils import cmd
+from utils import serialize
 
 
 def Input1 (title,placeholder,password,id,value=''):
@@ -81,7 +81,8 @@ class S_edit(Screen):
                 if err['notPswEqual']: log.write('password is not equal\n')
                 return
 
-            self.app.cmd(f'insert {i_name.value} "{i_psw.value}"')
+            psw = serialize(i_psw.value)
+            self.app.cmd(f'insert {i_name.value} "{psw}"')
             self.app.g_log.write(f"edit {i_name.value}\n")
         
         self.app.goHomeScreen('edit')

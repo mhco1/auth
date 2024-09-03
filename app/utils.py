@@ -1,4 +1,5 @@
 import re
+import binascii
 from os import popen
 
 
@@ -47,3 +48,9 @@ def getPathTree(node):
         return recursive(node.parent)
     
     return recursive(node)
+
+def serialize(t=''):
+    return t.encode('utf8').hex()
+
+def unserialize(t=''):
+    return binascii.unhexlify(t).decode('utf8')
