@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+Button {
+    height: 1;
+}
+
+Input {
+    width: 1fr;
+    height: 1;
+    border-right: $primary;
+    border-left: $primary;
+}
+
+Horizontal, Vertical, Tree {
+    height: auto;
+}
+
+.info {
+    color: red
+}
+
+S_profile OptionList {
+    width: 1fr;
+}
+
+S_edit_pass Collapsible Horizontal Vertical {
+    border-left: #1e90ff;
+}

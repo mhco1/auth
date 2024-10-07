@@ -14,10 +14,10 @@
             "type": "node"
         },
         {
-            "name": "Python Debugger: Current File with Arguments",
+            "name": "My Python",
             "type": "debugpy",
             "request": "launch",
-            "program": "/media/pastas/test/auth/app/app.py",
+            "program": "/media/pastas/test/auth/app2/app.py",
             "console": "integratedTerminal",
             "args": "${command:pickArgs}"
         }
