@@ -27,7 +27,7 @@ class S_config(Screen):
         if op == 'edit':
             self.app.conf['dir']['profile'] = path.realpath(path.expanduser(path.normpath(self.storage.value)))
 
-            with open(path.realpath(path.join(self.app.dir, 'conf.json')), mode="w", encoding="utf-8") as f:
+            with open(path.realpath(self.app.conf_dir), mode="w", encoding="utf-8") as f:
                 json.dump(self.app.conf, f)
             
             self.app.goHomeScreen()

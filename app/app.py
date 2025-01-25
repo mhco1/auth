@@ -1,6 +1,7 @@
 import json
+import shutil
 from uuid import uuid4
-from os import popen, path
+from os import popen, path, makedirs, environ
 
 from textual.app import App, ComposeResult
 from textual.widgets import Static, Log
@@ -40,12 +41,24 @@ class MyApp(App):
             select = self.select
         return path.realpath(path.join(self.conf['dir']['profile'], f'./{select}.key'))
 
+    def defineConfig(self):
+        if not path.exists(self.conf_dir):
+            makedirs(path.realpath(path.join(self.conf_dir, '../')), exist_ok=True)
+            shutil.copy(self.conf_dir_model, self.conf_dir)
+
+        with open(self.conf_dir) as f:
+            self.conf = json.load(f)
+            return
+
     def compose(self) -> ComposeResult:
         self.select = ''
+
+        self.home = path.join("/home", environ.get("USER", "default_user"))
         self.dir = path.realpath(path.join(__file__, '../'))
-        confPath = path.realpath(path.join(self.dir, 'conf.json'))
-        with open(confPath) as f:
-            self.conf = json.load(f)
+        self.conf_dir_model =  path.realpath(path.join(self.dir, '../conf.json'))
+        self.conf_dir = path.realpath(path.join(self.home, '.config/auth-app/conf.json'))
+
+        self.defineConfig()
         self.install_screen(S_home(screen_uuid='home'), 'home')
         self.push_screen('home')
         yield Static('')
