@@ -22,6 +22,8 @@ case $1 in
     gen-auth)
         echo -n $(oathtool -b --totp $(echo -n $2 | xxd -ps -r))
         ;;
+    get-keys)
+        ;;
     *)
         echo -n "no option"
         ;;

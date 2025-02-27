@@ -1,0 +1,73 @@
+#! /bin/bash
+
+[ -f .env ] && source .env
+
+case $1 in
+    install-native)
+        sudo cp -r . /opt/auth
+
+        bash /opt/auth/build/create-conf
+
+        sudo apt-get update && \
+            xargs apt-get install -y < ./build/packages/cli
+
+        sudo python -m venv /opt/auth/venv
+
+        sudo /opt/auth/venv/bin/pip install --no-cache-dir -r ./build/packages/python
+        ;;
+    build-dev)
+        docker build \
+            --build-arg USER=$(whoami) \
+            --build-arg UID=$(id -u) \
+            --build-arg GID=$(id -g) \
+            -t app.auth . && \
+
+        docker build \
+            --build-arg USER=$(whoami) \
+            --build-arg IMG=app.auth \
+            -t app.auth.dev /$ZSH 
+        ;;
+    build)
+        docker build \
+            --build-arg USER=$(whoami) \
+            --build-arg UID=$(id -u) \
+            --build-arg GID=$(id -g) \
+            -t app.auth .
+        ;;
+    run-dev)
+        docker run \
+            --name com.app.auth.dev \
+            -e DISPLAY=$DISPLAY \
+            -e USER=$(whoami) \
+            -e DEV=true \
+            -v /tmp/.X11-unix:/tmp/.X11-unix \
+            -v $HOME/.Xauthority:/root/.Xauthority \
+            -v $(pwd)/app:/usr/src/app/app \
+            --rm -dit app.auth.deb
+        ;;
+    run)
+        #xhost +local:
+
+        docker run \
+            --name com.app.auth \
+            -e DISPLAY=$DISPLAY \
+            -e USER=$(whoami) \
+            -v /home:/home \
+            -v /tmp/.X11-unix:/tmp/.X11-unix \
+            -v $HOME/.Xauthority:/root/.Xauthority \
+            --rm -it app.auth
+        ;;
+    *)
+        echo "exe <option>"
+        echo ""
+        echo "- install-native"
+        echo "- build-dev"
+        echo "- build"
+        echo "- run-dev"
+        echo "- run"
+    ;;
+esac
+
+ false  &&\
+ 
+ echo 'ok' 

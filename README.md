@@ -15,15 +15,17 @@ Aplicativo **CLI** para gerenciamento de credenciais.
 
 ### 🐳 Instalação utilizando o Docker
 
+> Execute `chmod +x` em `./exe` para torna-lo executável
+
 - 1️⃣ Construir a imagem
     
     ```bash
-    ./bin-build
+    ./exe build
     ```
 - 2️⃣ Iniciar o app
 
     ```bash
-    ./bin-auth
+    ./exe run
     ```
 
 ### 📥 De forma nativa
@@ -31,18 +33,31 @@ Aplicativo **CLI** para gerenciamento de credenciais.
 - 1️⃣ Instalar o projeto de forma nativa em **/opt/auth**
     
     ```bash
-    ./bin-install
+    ./exe install-native
     ```
 
-### 👾 Em desenvolvimento com Docker
+### 👾 Para desenvolvimento com Docker
 
-- 1️⃣ Executar o container em background
+Antes, baixe a imagem do **zsh** no repositório [docker-imagens/zsh](https://github.com/mhco1/docker-imagens/blob/main/docker/zsh/README.md)
+
+- 1️⃣ Na raiz, crie um arquivo `.env` com o seguinte conteudo:
+
+    ```bash
+    ZSH=/diretorio/da/imagem/zsh
+    ```
+- 2️⃣ Execute o `build-dev` ao invés do `build`
     
     ```bash
-    ./bin-background
+    ./exe build-dev
     ```
 
-- 2️⃣ Conectar ao container com o **Dev Containers** no VSCode
+- 3️⃣ Executar o container em background
+    
+    ```bash
+    ./exe run-dev
+    ```
+
+- 4️⃣ Conectar ao container com o **Dev Containers** no VSCode
    - Utilize a extensão **Dev Containers** para abrir o projeto dentro do ambiente do container
 
 ## 📝 Licença  
