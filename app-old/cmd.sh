@@ -23,6 +23,7 @@ case $1 in
         echo -n $(oathtool -b --totp $(echo -n $2 | xxd -ps -r))
         ;;
     get-keys)
+        echo -n $(gpg --list-keys | awk -F'uid[ \t]+\\[[^]]+\\] ' '/^uid/ {sub(/ *\(".*"\) .*/, "", $2); print $2}')
         ;;
     *)
         echo -n "no option"

@@ -12,10 +12,13 @@ class S_config(Screen):
         super().__init__()
         self.screen_uuid = screen_uuid
         self.storage = Input(self.app.conf['dir']['profile'])
+        # self.key = Input(self.app.conf[...])
 
     def compose(self):
-        yield Static('Local-storage')
+        yield Static('Local-Storage')
         yield self.storage
+        yield Static('Key')
+        yield self.key
         yield Horizontal(
             Button('edit','success'),
             Button('back','primary')
