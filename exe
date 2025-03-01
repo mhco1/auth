@@ -6,7 +6,8 @@ case $1 in
     install-native)
         sudo cp -r . /opt/auth
 
-        bash /opt/auth/build/create-conf
+        /bin/bash /opt/auth/build/create-conf
+        /bin/bash /opt/auth/build/create-key
 
         sudo apt-get update && \
             xargs apt-get install -y < ./build/packages/cli
@@ -28,11 +29,28 @@ case $1 in
             -t app.auth.dev /$ZSH 
         ;;
     build)
+        /bin/bash ./build/create-key;
+
         docker build \
             --build-arg USER=$(whoami) \
             --build-arg UID=$(id -u) \
             --build-arg GID=$(id -g) \
             -t app.auth .
+        ;;
+    pk10)
+        docker run \
+            --name com.app.auth.dev \
+            -e DISPLAY=$DISPLAY \
+            -e USER=$(whoami) \
+            -e DEV=true \
+            --rm -it app.auth.dev
+        ;;
+
+    commit)
+        docker commit -p com.app.auth.dev app.auth.dev
+        ;;
+    shell)
+        docker exec -it com.app.auth.dev /bin/zsh
         ;;
     run-dev)
         docker run \
@@ -42,8 +60,8 @@ case $1 in
             -e DEV=true \
             -v /tmp/.X11-unix:/tmp/.X11-unix \
             -v $HOME/.Xauthority:/root/.Xauthority \
-            -v $(pwd)/app:/usr/src/app/app \
-            --rm -dit app.auth.deb
+            -v $(pwd):/usr/src/app \
+            --rm -dit app.auth.dev
         ;;
     run)
         #xhost +local:
@@ -67,7 +85,3 @@ case $1 in
         echo "- run"
     ;;
 esac
-
- false  &&\
- 
- echo 'ok' 
