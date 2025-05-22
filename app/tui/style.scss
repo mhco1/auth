@@ -15,7 +15,12 @@ Input {
     border-left: $primary;
 }
 
-Horizontal, Vertical, Tree {
+Static{
+    color: $text;
+    width: auto;
+}
+
+Horizontal, Vertical, Tree, ListView {
     height: auto;
 }
 
@@ -23,10 +28,10 @@ Horizontal, Vertical, Tree {
     color: red
 }
 
-S_profile OptionList {
-    width: 1fr;
+.lh {
+    border-bottom: $secondary;
 }
 
-S_edit_pass Collapsible Horizontal Vertical {
-    border-left: #1e90ff;
+.lv {
+    border-right: $secondary;
 }

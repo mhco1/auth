@@ -3,85 +3,65 @@
 [ -f .env ] && source .env
 
 case $1 in
-    install-native)
-        sudo cp -r . /opt/auth
-
-        /bin/bash /opt/auth/build/create-conf
-        /bin/bash /opt/auth/build/create-key
-
-        sudo apt-get update && \
-            xargs apt-get install -y < ./build/packages/cli
-
-        sudo python -m venv /opt/auth/venv
-
-        sudo /opt/auth/venv/bin/pip install --no-cache-dir -r ./build/packages/python
-        ;;
-    build-dev)
-        docker build \
-            --build-arg USER=$(whoami) \
-            --build-arg UID=$(id -u) \
-            --build-arg GID=$(id -g) \
-            -t app.auth . && \
-
-        docker build \
-            --build-arg USER=$(whoami) \
-            --build-arg IMG=app.auth \
-            -t app.auth.dev /$ZSH 
-        ;;
     build)
-        /bin/bash ./build/create-key;
+        IMG=$2
+        NAME=$3
 
         docker build \
             --build-arg USER=$(whoami) \
             --build-arg UID=$(id -u) \
             --build-arg GID=$(id -g) \
-            -t app.auth .
-        ;;
-    pk10)
-        docker run \
-            --name com.app.auth.dev \
-            -e DISPLAY=$DISPLAY \
-            -e USER=$(whoami) \
-            -e DEV=true \
-            --rm -it app.auth.dev
-        ;;
+            --build-arg IMG=app.$IMG \
+            -t app.$NAME .
+    ;;
+    build-dev)
+        IMG=$2
+        NAME=$3
 
-    commit)
-        docker commit -p com.app.auth.dev app.auth.dev
-        ;;
-    shell)
-        docker exec -it com.app.auth.dev /bin/zsh
-        ;;
+        docker build \
+            --build-arg USER=$(whoami) \
+            --build-arg IMG=app.$IMG \
+            -t app.$NAME /$ZSH
+    ;;
     run-dev)
+        NAME=$2
+
         docker run \
-            --name com.app.auth.dev \
+            --name run.$NAME \
             -e DISPLAY=$DISPLAY \
             -e USER=$(whoami) \
             -e DEV=true \
             -v /tmp/.X11-unix:/tmp/.X11-unix \
             -v $HOME/.Xauthority:/root/.Xauthority \
             -v $(pwd):/usr/src/app \
-            --rm -dit app.auth.dev
-        ;;
+            --rm -dit app.$NAME
+    ;;
     run)
-        #xhost +local:
+        NAME=$2
 
         docker run \
-            --name com.app.auth \
+            --name run.$NAME \
             -e DISPLAY=$DISPLAY \
             -e USER=$(whoami) \
             -v /home:/home \
             -v /tmp/.X11-unix:/tmp/.X11-unix \
             -v $HOME/.Xauthority:/root/.Xauthority \
-            --rm -it app.auth
-        ;;
-    *)
-        echo "exe <option>"
-        echo ""
-        echo "- install-native"
-        echo "- build-dev"
-        echo "- build"
-        echo "- run-dev"
-        echo "- run"
+            --rm -it app.$NAME
     ;;
+    commit)
+        NAME=$2
+
+        docker commit -p run.$NAME app.$NAME
+    ;;
+    shell)
+        NAME=$2
+
+        docker exec -it run.$NAME /bin/zsh
+    ;;
+    shell-root)
+        NAME=$2
+
+        docker exec -u 0 -it run.$NAME /bin/bash
+    ;;
+
 esac

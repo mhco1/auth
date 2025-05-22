@@ -1,4 +1,5 @@
-FROM python:3-slim
+ARG IMG=debian
+FROM $IMG
 
 # argumentos via cli 
 ARG USER
@@ -10,6 +11,9 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /usr/src/app
 
+# definir o shell como bash
+SHELL ["/bin/bash", "-c"]
+
 # cria o usuario host
 RUN groupadd -g $GID $USER && \
     useradd -m -u $UID -g $GID $USER && \
@@ -20,22 +24,21 @@ USER $USER
 # arquivos necessarios
 RUN mkdir ./app
 COPY ./app ./app
-COPY ./build ./
-
-# cofiguracao
-RUN sh ./create-conf
-RUN sh ./create-key
+COPY ./build ./build
 
 USER root
 
 # dependencias do sistema
 RUN apt-get update && \
-    xargs apt-get install -y < ./packages/cli && \
+    xargs apt-get install -y < ./build/pkg-cli && \
     rm -rf /var/lib/apt/lists/*
-
-# dependencias do python
-RUN pip install --no-cache-dir -r ./packages/python
 
 USER $USER
 
-CMD ["python", "./app/app.py"]
+# dependencias do python
+RUN python3 -m venv /usr/src/app/.venv
+RUN /usr/src/app/.venv/bin/pip install --no-cache-dir -r ./build/pkg-python
+
+ENV TERM=xterm-256color
+
+CMD ["/bin/bash", "/usr/src/app/app/tui/app"]

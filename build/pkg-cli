@@ -1,0 +1,9 @@
+python3
+python3-venv
+tree
+gnupg
+pwgen
+oathtool
+xxd
+xclip
+uuid

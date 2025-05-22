@@ -1,0 +1,69 @@
+#! /bin/bash
+
+DIR="$(realpath "$(dirname "$0")"/../)"
+source $DIR/etc/conf
+source $DIR/../.venv/bin/activate
+
+CHECK=$($DIR/cmd/cmd.sh conf check)
+
+if [[ $CHECK == 1 ]]; then
+    python $DIR/tui/app.py
+    exit
+fi
+
+echo "Set the Config Path: (default: ~/.auth/conf)"
+read -rp "> " INPUT
+[ -n "$INPUT" ] && CONF="$INPUT"
+echo "Set the Local Path: (default: ~/.auth/local)"
+read -rp "> " INPUT
+[ -n "$INPUT" ] && LOCAL="$INPUT"
+echo "Set the GPG Path: (default: ~/.auth/gpg)"
+read -rp "> " INPUTHOM
+[ -n "$INPUT" ] && GNUPG="$INPUT"
+echo "Set the Key Name: (default: auth)"
+read -rp "> " INPUT
+[ -n "$INPUT" ] && GPGKE="$INPUT"
+
+while [[ "$PASS" == "" ]]; do
+    echo "Set the Key Password:"
+    read -srp "> " PASS
+    if [[ "$PASS" == "" ]]; then
+        echo ""
+        echo ""
+        echo "Need one password!"
+        echo ""
+    fi
+done
+
+echo ""
+echo ""
+echo "Your configure is corret? (y/n)"
+echo "  > Config Path: $CONF"
+echo "  > Local Path: $LOCAL"
+echo "  > GPG Path: $GNUPGHOME"
+echo "  > Key Name: $GPGKEY"
+read -rp "> " INPUT
+if [[ $INPUT != "y" ]]; then
+    echo "Operation canceled"
+    exit
+fi
+
+echo ""
+echo ""
+
+
+
+ARGS=()
+[ -n "$CONF" ] && ARGS+=("-c $CONF")
+[ -n "$LOCAL" ] && ARGS+=("-l $LOCAL")
+[ -n "$GNUPGHOME" ] && ARGS+=("-g $GNUPGHOME")
+[ -n "$GPGKEY" ] && ARGS+=("-k $GPGKEY")
+
+$DIR/cmd/cmd.sh conf create "${ARGS[@]}"
+
+if ! $DIR/cmd/cmd.sh key ls | grep -q "$GPGKEY" ; then
+    $DIR/cmd/cmd.sh key add "$GPGKEY" "$PASS"
+    $DIR/cmd/cmd.sh key ls
+fi
+
+python $DIR/tui/app.py

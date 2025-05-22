@@ -1,0 +1,4 @@
+CONF="$HOME/.auth/conf"
+LOCAL="$HOME/.auth/local"
+GNUPGHOME="$HOME/.auth/gpg"
+GPGKEY="auth"
